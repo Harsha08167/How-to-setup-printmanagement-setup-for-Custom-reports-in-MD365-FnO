@@ -1,12 +1,12 @@
 # How-to-setup-printmanagement-setup-for-Custom-reports-in-MD365-FnO
 
-Step 1:- Extend the PrintMgmtDocumentType Base Enum
+## Step 1:- Extend the PrintMgmtDocumentType Base Enum
 PrintMgmtDocumentType
 
 <img width="500" height="168" alt="image" src="https://github.com/user-attachments/assets/a6b1082f-a9f2-4a14-9175-8f417bf277b6" />
 
-Step 2:- Associate new print management document type with a default report design
-
+## Step 2:- Associate new print management document type with a default report design
+```
 public static class PrintMgmtDocType_Extension
 {
     [SubscribesTo(classStr(PrintMgmtDocType), delegateStr(PrintMgmtDocType, getDefaultReportFormatDelegate))]
@@ -20,9 +20,11 @@ public static class PrintMgmtDocType_Extension
         }
     }
 }
+```
 
+## Step 3:- Add PrintMgmtNode according to Module, In my case it is in Inventory Management
 
-Step 3:- Add PrintMgmtNode according to Module, In my case it is in Inventory Management
+```
 [ExtensionOf(classStr(PrintMgmtNode_Invent))]
 internal final class PrintMgmtNode_Invent_Class_Extension
 {
@@ -33,9 +35,10 @@ internal final class PrintMgmtNode_Invent_Class_Extension
         return docTypes;
     }
 }
+```
 
-
-Step 4 :- Add PrintMgmtReportFormatPublisher_Extension
+## Step 4 :- Add PrintMgmtReportFormatPublisher_Extension
+```
 [ExtensionOf(classStr(PrintMgmtReportFormatPublisher))]
 internal final class PrintMgmtReportFormatPublisher_Extension
 {
@@ -57,8 +60,9 @@ internal final class PrintMgmtReportFormatPublisher_Extension
     }
 
 }
-
-Step 5:- Create a new addPrintMgmtReportFormat to use for changing report format
+```
+## Step 5:- Create a new addPrintMgmtReportFormat to use for changing report format
+```
 /// <summary>/;
 /// Create a new addPrintMgmtReportFormat to use for changing report format
 /// </summary>
@@ -103,8 +107,10 @@ public class HSOETOAddPrintMgmtReportFormat
     }
 
 }
+```
 
-Step 6:- Now main class that is Controller class of the report,
+## Step 6:- Now main class that is Controller class of the report,
+```
 ﻿/// <summary>
 /// The <c>HSOETransferOrderConfirmControllerPrintMgmt</c> class is used to run print management for <c>TransferOrder</c> report.
 /// </summary>
@@ -362,9 +368,10 @@ internal final class HSOETransferOrderConfirmControllerPrintMgmt extends SrsPrin
         return true;
     }
 }
+```
 
-To Print it via email or standard customer purpose use this class(Extension)
-
+## To Print it via email or standard customer purpose use this class(Extension)
+```
 ﻿/// <summary>
 /// Extension of the <c>PrintMgmtDelegatesHandler</c> class to override party type logic for print management.
 /// This is used to specify the party (e.g., Customer/Vendor/None) for a specific document type.
@@ -394,11 +401,12 @@ internal final class HSOE_PrintMgmtDelegatesHandler_Class_Extension
         return partyType;
     }
 }
-
-Ensure that the 'System' field is enabled 
+```
+## Ensure that the 'System' field is enabled 
 <img width="837" height="446" alt="image" src="https://github.com/user-attachments/assets/f968b622-1a80-4d12-91b3-90e2bde1f3ae" />
 
 If not then use this Runnable class
+```
 ﻿/// <summary>
 /// The <c>HSOEPrintMgmtInitializer</c> class is used to update the Print Management Report Format configuration.
 /// Specifically, it sets the selected report format as a "system" format for the Transfer Order document.
@@ -436,10 +444,10 @@ internal final class HSOEPrintMgmtInitializer
         ttsCommit;
     }
 }
-
-Add controller class in 3 Output menu item buttons
+```
+## Add controller class in 3 Output menu item buttons
 i.e, Copy, Original and Original Print
 
-Note:- this code will work all print management conditions, Email, Printer etc., 
+## Note:- this code will work all print management conditions, Email, Printer etc., 
 
 
